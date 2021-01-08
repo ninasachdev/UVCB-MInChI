@@ -1,9 +1,9 @@
 var filepath;
+var filename;
 function getFile(fileName) {
     filepath = fileName;
+    filename = fileName.split('.')[0];
 }
-
-
 
 getFile('EU_REACH.txt');
 
@@ -25,14 +25,14 @@ function getFileContent() {
             fileArray.push(fileContent[i].split('\t'));
             var arrayToJSON = JSON.stringify(fileArray);
             var fs = require('fs');
-            fs.writeFile('fileArray.json', arrayToJSON, function(err) {
+            fs.writeFile(filename + 'Array.json', arrayToJSON, function(err) {
                 if (err) {
                     console.log(err);
                 }
             })
         } 
     }
-    , 2000);
+    , 10000); //might need to increase timeout length if there are errors in the resulting JSON file
 }
 
 

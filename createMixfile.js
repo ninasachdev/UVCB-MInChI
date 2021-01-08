@@ -1,17 +1,19 @@
 
+var mixtureFiles = ['EU_REACH.txt', 'mixtures.txt', 'random.txt'];
+
 var fileArray;
 
 var fs = require('fs'); 
 
-var fileArray = JSON.parse(fs.readFileSync('fileArray.json'));
+fileArray = JSON.parse(fs.readFileSync('EU_REACHArray.json')); //eventually need to add for loop to include all text files
 
-console.log(fileArray[0][2]);
+//console.log(fileArray[0][2]);
 //to create Mixfile: need name, molfile, quantity, units, inchi, inchiKey
 
 //create a list of dictionaries
 var chem_dict = []
 var chem_keys = fileArray[0]
-for (i = 1; i < fileArray.length; i++) { //want to skip the first row of labels
+for (i = 1; i < filerray.length; i++) { //want to skip the first row of labels
     current_dict = {}
     for (k=0; k < chem_keys.length; k++) {
         current_dict[chem_keys[k]] = fileArray[i][k];
@@ -28,4 +30,4 @@ for (i = 0; i < chem_dict.length; i++) {
     }
 }
 
-console.log(filter_InChI[5]);
+console.log(filter_InChI.length); //there are only 26 entries in EU_REACH that have an InChI value
