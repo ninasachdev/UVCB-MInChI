@@ -13,7 +13,7 @@ fileArray = JSON.parse(fs.readFileSync('EU_REACHArray.json')); //eventually need
 //create a list of dictionaries
 var chem_dict = []
 var chem_keys = fileArray[0]
-for (i = 1; i < filerray.length; i++) { //want to skip the first row of labels
+for (i = 1; i < fileArray.length; i++) { //want to skip the first row of labels
     current_dict = {}
     for (k=0; k < chem_keys.length; k++) {
         current_dict[chem_keys[k]] = fileArray[i][k];
@@ -21,7 +21,7 @@ for (i = 1; i < filerray.length; i++) { //want to skip the first row of labels
     chem_dict.push(current_dict);
 }
 
-//console.log(chem_dict[50]);
+//console.log(chem_dict[48]);
 
 filter_InChI = [];
 for (i = 0; i < chem_dict.length; i++) {
@@ -30,4 +30,13 @@ for (i = 0; i < chem_dict.length; i++) {
     }
 }
 
-console.log(filter_InChI.length); //there are only 26 entries in EU_REACH that have an InChI value
+//console.log(filter_InChI[2]); //26 entries in EU_REACH that have an InChI value, 36 entries in mixtures, and 6 in random
+
+
+//get list of SMILES
+SMILES_list = []
+for (i = 0; i < filter_InChI.length; i++) {
+    SMILES_list.push(filter_InChI[i]['SMILES_Final'])
+}
+
+console.log(SMILES_list);

@@ -5,7 +5,7 @@ function getFile(fileName) {
     filename = fileName.split('.')[0];
 }
 
-getFile('EU_REACH.txt');
+getFile('random.txt'); //change file name accordingly
 
 const lineReader = require('line-reader'); //load line-reader module installed from npm
 var rawFileContent = [];
@@ -32,7 +32,7 @@ function getFileContent() {
             })
         } 
     }
-    , 10000); //might need to increase timeout length if there are errors in the resulting JSON file
+    , 8000); //might need to increase timeout length if there are errors in the resulting JSON file
 }
 
 
