@@ -45,6 +45,13 @@ def filterInChI(chem_dict):
 
     return filter_InChI
 
+def getChemicalName(filter_InChI):
+    names = []
+    for i in range(len(filter_InChI)):
+        names.append(filter_InChI[i]['Chemical_Name_Final'])
+
+    return names
+
 def getInChI(filter_InChI):
     InChI_list = []
     InChI_key_list = []
@@ -88,10 +95,12 @@ if __name__=='__main__':
 
     chem_dict = createChemDict(filepath)
     filter_InChI = filterInChI(chem_dict)
+    names = getChemicalName(filter_InChI)
     InChI_list, InChI_key_list = getInChI(filter_InChI)
     SMILES = getSMILES(filter_InChI)
     molfiles = getMolfile(SMILES)
 
+    print(names)
     print(InChI_list)
     print(len(InChI_key_list))
     print(len(SMILES))
