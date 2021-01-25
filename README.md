@@ -2,18 +2,28 @@
 
 Introduction to project and motivation (Clark paper). 
 
-## Research Questions and First steps of this project (Mixtures Github, understanding the structure of mixfiles and MInChIs)
+## Research Questions and First steps of this project (Mixtures Github, understanding the STRUCTURE of mixfiles and MInChIs)
 
 1. To what extent can UVCBs (mixtures) be encoded in machine-readable formats i.e., as MInChIs?
-2. What challenges exist in encoding MInChIs using currently available UVCB data1? 
+2. What challenges exist in encoding MInChIs using currently available UVCB data? 
 3. How can UVCB data providers improve the communication and dissemination of UVCB compounds?
 
 
-Overview of file formats and how to approach t
+Overview of file formats and how to approach the research questions
+
+## Overview of mixture files and parsing through them (creating list of dictionaries)
+
+add explanation and code snippets here
+
+## Extracting features from mixtures files (name, InChI, InChI key, SMILES, molfile, concentration)
+
+add explanation and code snippets here
+
+## 
 
 ## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/ninasachdev/UVCB-MInChI/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+You can use the [editor on GitHub](https://github.com/ninasachdev/UVCB-MInChI/edit/gh-pages/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
