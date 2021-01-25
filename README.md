@@ -1,3 +1,16 @@
+## Cheminformatics of Unknown, Variable, Complex, and Biological (UVCB) substances
+
+Introduction to project and motivation (Clark paper). 
+
+## Research Questions and First steps of this project (Mixtures Github, understanding the structure of mixfiles and MInChIs)
+
+1. To what extent can UVCBs (mixtures) be encoded in machine-readable formats i.e., as MInChIs?
+2. What challenges exist in encoding MInChIs using currently available UVCB data1? 
+3. How can UVCB data providers improve the communication and dissemination of UVCB compounds?
+
+
+Overview of file formats and how to approach t
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/ninasachdev/UVCB-MInChI/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
