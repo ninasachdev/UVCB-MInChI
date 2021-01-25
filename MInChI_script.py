@@ -155,6 +155,7 @@ if __name__=='__main__':
     names, InChI_list, InChI_key_list, SMILES = getFeatures(filter_InChI)
     molfiles = getMolfile(SMILES)
 
+    print(len(chem_dict[0].keys()))
     #print(names)
     #print(InChI_list[2])
     #print(len(InChI_key_list))
@@ -172,3 +173,5 @@ if __name__=='__main__':
     mixfiles = createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities, units)
 
     print(createMInChIString(mixfiles))
+
+    #MAKE SUMMARYS STATISTICS CHART
