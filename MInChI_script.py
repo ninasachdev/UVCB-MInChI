@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-############################
-#@author: Nina Sachdev
-#@date created: 1/13/21
+'''
+@author: Nina Sachdev
+@date created: 1/13/21 (modified from my original JavaScript code created on 1/5/21)
 
-###########################
-import json, rdkit
+'''
+import json, rdkit, os, shutil
 from rdkit import Chem
 
 
@@ -31,10 +31,18 @@ def createChemDict(fileName):
 
         chem_dict.append(current_dict)
 
+    infile.close()
+
+    if os.path.isdir(filename):
+        shutil.rmtree(filename)
+
+    os.mkdir(filename)
+    os.chdir(filename)
+
     with open(filename + '_dict.json', 'w') as outfile:
         json.dump(chem_dict, outfile)
 
-    return chem_dict
+    return chem_dict, chem_keys
 
 
 def filterInChI(chem_dict):
@@ -67,8 +75,6 @@ def getMolfile(SMILES_list):
 
     return molfile_list
 
-#all mixtures or just the ones that have an InChI??
-
 def getConcentration(filter_InChI, names):
     quantities = ['' for i in range(len(names))]
     units = ['' for i in range(len(names))]
@@ -83,16 +89,9 @@ def getConcentration(filter_InChI, names):
         
     return quantities, units
 
-
-
-
-'''
-Note that ratio units are handled as a special case,
-since the Mixfle stores them in [numerator, denominator] form, while in the MInChI notation, only the numerators are listed, and the denominator is implied
-'''
-#technically don't need the units parameter?
-
 def createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities, units):
+    os.mkdir('mixfiles')
+
     mixfiles = []
     for i in range(len(InChI_list)):
         mixfile_dict = {}
@@ -106,7 +105,7 @@ def createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMI
             ratio = '[' + str(quantities[i][1]) + ', ' + str(quantities[i][3] + ']')
             mixfile_dict['ratio'] = ratio
 
-        outfile = open('mixfiles/' + filename + 'mixture' + str(i) + '.mixfile', 'w')
+        outfile = open('mixfiles/' + filename + '_mixture' + str(i) + '.mixfile', 'w')
         outfile.write('{"mixfileVersion":' + str(mixfile_dict['mixfileVersion']) + ',\n')
         outfile.write('"name":' + str(mixfile_dict['name']) + ',\n')
         outfile.write('"molfile":' + str(mixfile_dict['molfile']) + ',\n')
@@ -141,37 +140,102 @@ def createMInChIString(mixfiles):
     
     return minchis
 
+def addMInChIFile(minchis, chem_dict, chem_keys, filename):
+
+    outfile = open(filename + '_MInChI.txt', 'w')
+
+    chem_keys[-1] = 'Iodo'
+    chem_keys.append('MInChI\n')
+    outfile.write('\t'.join(chem_keys))
+
+    for i in range(len(chem_dict)):
+        name = chem_dict[i]['Chemical_Name_Final']
+        elts = list(chem_dict[i].values())
+        elts[-1] = elts[-1].strip('\n')
+        if name in minchis:
+            elts.append(minchis[name])
+        else:
+            elts.append('')
+
+        outfile.write('\t'.join(elts) + '\n')
+
+
+def summary_stats(chem_dict, minchis, filename):
+    stats = {}
+    for i in range(len(chem_dict)):
+        keys = []
+        for key, val in chem_dict[i].items():
+            if len(chem_dict[i][key]) > 0 and (key == 'InChI_Final' or key == 'SMILES_Final'):
+                keys.append(key)
+
+        name = chem_dict[i]['Chemical_Name_Final']
+        for l in range(len(name)):
+            if name[l] == '(':
+                if name[l+2] == ':' and name[l+4] == ')':
+                    keys.append('Ratio_Concentration')
+
+
+        stats[name] = keys
+
+    inchi_smiles_ratio = inchi_smiles = inchi_ratio = smiles_ratio = inchi = smiles = ratio = 0
+
+    for s in stats:
+        if stats[s] == ['InChI_Final', 'SMILES_Final', 'Ratio_Concentration']:
+            inchi_smiles_ratio += 1
+        elif stats[s] == ['InChI_Final', 'SMILES_Final']:
+            inchi_smiles += 1
+        elif stats[s] == ['InChI_Final', 'Ratio_Concentration']:
+            inchi_ratio += 1
+        elif stats[s] == ['SMILES_Final', 'Ratio_Concentration']:
+            smiles_ratio += 1
+        elif stats[s] == ['InChI_Final']:
+            inchi += 1
+        elif stats[s] == ['SMILES_Final']:
+            smiles += 1
+        elif stats[s] == ['Ratio_Concentration']:
+            ratio += 1
+
+    outfile = open(filename + 'summary_stats.txt', 'w')
+    labels = ['Num_MInChIs', 'InChI_SMILES_Ratio', 'InChI_SMILES', 'InChI_Ratio', 'SMILES_Ratio', 'InChI', 'SMILES', 'Ratio']
+    stats_list = [len(minchis), inchi_smiles_ratio, inchi_smiles, inchi_ratio, smiles_ratio, inchi, smiles, ratio]
+
+    for i in range(len(labels)):
+        outfile.write(labels[i] + ': ' + str(stats_list[i]) + ' UVCB substances')
+        outfile.write('\n')
+    
+
+def main(currentFile):
+    filepath, filename = getFile(currentFile)
+
+    chem_dict, chem_keys = createChemDict(filepath)
+
+    filter_InChI = filterInChI(chem_dict)
+
+    names, InChI_list, InChI_key_list, SMILES = getFeatures(filter_InChI)
+    
+    molfiles = getMolfile(SMILES)
+
+    quantities, units = getConcentration(filter_InChI, names)
+
+    mixfiles = createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities, units)
+
+    minchis = createMInChIString(mixfiles)
+
+    addMInChIFile(minchis, chem_dict, chem_keys, filename)
+
+    summary_stats(chem_dict, minchis, filename)
+
 
 ########################################
 if __name__=='__main__':
 
-    mixtureFiles = ['EU_REACH.txt', 'mixtures.txt', 'random.txt'] #want to eventually loop through and compute for all three files
+    mixtureFiles = ['EU_REACH.txt', 'mixtures.txt', 'random.txt']
 
+    mainDir = os.getcwd()
+    
+    for mixtureFile in mixtureFiles:
+        os.chdir(mainDir)
+        main(mixtureFile)
+    
 
-    filepath, filename = getFile('EU_REACH.txt')
-
-    chem_dict = createChemDict(filepath)
-    filter_InChI = filterInChI(chem_dict)
-    names, InChI_list, InChI_key_list, SMILES = getFeatures(filter_InChI)
-    molfiles = getMolfile(SMILES)
-
-    print(len(chem_dict[0].keys()))
-    #print(names)
-    #print(InChI_list[2])
-    #print(len(InChI_key_list))
-    #print(len(SMILES))
-    #print(molfiles)
-
-
-    #m = Chem.MolFromSmiles(SMILES[3])
-    #print(rdkit.Chem.inchi.MolToInchi(m))
-
-    quantities, units = getConcentration(filter_InChI, names)
-    #print(quantities)
-    #print(len(units))
-
-    mixfiles = createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities, units)
-
-    print(createMInChIString(mixfiles))
-
-    #MAKE SUMMARYS STATISTICS CHART
+  
