@@ -1,0 +1,17 @@
+{"mixfileVersion":0.01,
+"name":Antimony, compd. with rubidium (1:3),
+"molfile":
+     RDKit          2D
+
+  4  0  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 Rb  0  0  0  0  0 15  0  0  0  0  0  0
+    1.0000    0.0000    0.0000 Rb  0  0  0  0  0 15  0  0  0  0  0  0
+    0.0000    1.0000    0.0000 Rb  0  0  0  0  0 15  0  0  0  0  0  0
+    2.0000    0.0000    0.0000 Sb  0  0  0  0  0 15  0  0  0  0  0  0
+M  END
+,
+"inchi":InChI=1S/3Rb.Sb/q3*+1;,
+"inchiKey":BZWWPLLHVNGLFX-UHFFFAOYSA-N,
+"smiles":[Rb].[Rb].[Rb].[Sb],
+"ratio":[1, 3],
+}

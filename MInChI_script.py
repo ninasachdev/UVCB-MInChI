@@ -35,6 +35,9 @@ def createChemDict(fileName):
 
     if os.path.isdir(filename):
         shutil.rmtree(filename)
+        
+    if os.path.isdir(filename + '/mixtures'):
+        shutil.rmtree(filename + '/mixtures')
 
     os.mkdir(filename)
     os.chdir(filename)
