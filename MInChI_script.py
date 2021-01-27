@@ -108,6 +108,8 @@ def createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMI
             ratio = '[' + str(quantities[i][1]) + ', ' + str(quantities[i][3] + ']')
             mixfile_dict['ratio'] = ratio
 
+
+        '''
         outfile = open('mixfiles/' + filename + '_mixture' + str(i) + '.mixfile', 'w')
         outfile.write('{"mixfileVersion":' + str(mixfile_dict['mixfileVersion']) + ',\n')
         outfile.write('"name":' + str(mixfile_dict['name']) + ',\n')
@@ -123,6 +125,11 @@ def createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMI
 
         outfile.write('}')
         outfile.close()
+
+        '''
+
+        with open('mixfiles/' + filename + '_mixture' + str(i) + '.mixfile', 'w') as outfile:
+            json.dump(mixfile_dict, outfile)
 
         mixfiles.append(mixfile_dict)
 
