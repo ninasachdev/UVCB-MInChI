@@ -157,7 +157,7 @@ Each MInChI string is separated into four parts: the header, structure identifie
 
 Here are a few examples of the MInChI strings that were generated from the EU_REACH dataset. All MInChI strings have the same header: MInChI=0.00.1S.
 
-Example #1:
+### Example #1:
 
 ![Minchi Example #1](minchi1.png)
 **Structure identifier:** C10H22O/c1-2-3-4-5-6-7-8-9-10-11/h11H,2-10H2,1H3 → in this case, there is only one InChI associated with Alcohols, C9-11
@@ -166,7 +166,7 @@ Example #1:
 
 **Concentration:** there is no concentration associated with this mixture
 
-Example #2:
+### Example #2:
 
 ![Minchi Example #2](minchi2.png)
 **Structure identifier:** C18H34O2.C4H11NO/c1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17-18(19)20;1-4(2,5)3-6/h9-10H,2-8,11-17H2,1H3,(H,19,20);6H,3,5H2,1-2H3/b10-9-; → it would be better if there were two separate InChI;s for 9-Octadecenoic acid (9Z) and 2-amino-2-methyl-1-propanol (1:1), respectively
@@ -175,7 +175,7 @@ Example #2:
 
 **Concentration:** 1:1vp → this is the concentration ratio of the entire mixture
 
-Example #3:
+### Example #3:
 
 ![Minchi Example #3](minchi3.png)
 **Structure identifier:** C7H9NO4S.C6H7N3O2.C6H6O2.Cu.2Na/c1-12-7-3-2-5(4-6(7)8)13(9,10)11;7-4-1-2-6(9(10)11)5(8)3-4;7-5-2-1-3-6(8)4-5;;;/h2-4H,8H2,1H3,(H,9,10,11);1-3H,7-8H2;1-4,7-8H;;;/q;;;;2*+1/p-2 → it would be better if the structure identifier was separated into multiple components
