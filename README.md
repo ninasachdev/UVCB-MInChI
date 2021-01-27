@@ -54,7 +54,6 @@ current_dict = {
         “Chemical_Name” : "Alcohols, C9-11"
         _and so on…_
         }
-
 ```
 
 In case this list of dictionaries needs to be accessed later on for a different project, `chem_dict` will be saved as a JSON file.
@@ -67,7 +66,6 @@ As mentioned previously, “Chemical_Name_Final”, “InChIKey_Final”, “InC
 for i in range(len(chem_dict)):
     if len(chem_dict[i]['InChI_Final']) > 0:
         filter_InChI.append(chem_dict[i])
-
 ```
 
 Next, the four keys needed to create the Mixfile and MInChI for each substance can be stored in separate lists.
@@ -79,7 +77,6 @@ for i in range(len(filter_InChI)):
     InChI_list.append(filter_InChI[i]['InChI_Final'])
     InChI_key_list.append(filter_InChI[i]['InChIKey_Final'])
     SMILES_list.append(filter_InChI[i]['SMILES_Final'])
-
 ```
 
 These four lists will be needed later on.
