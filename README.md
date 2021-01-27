@@ -29,8 +29,8 @@ In each row of the file, there are 150 UVCB substances. The columns correspond t
 
 ```markdown
 with open (filepath, 'r') as infile:
-       lines = infile.readlines()
-       chem_keys =  lines[0].split('\t')
+    lines = infile.readlines()
+    chem_keys =  lines[0].split('\t')
 ```
 
 The entire file is parsed into a list of dictionaries called `chem_dict`, with each list entry corresponding to a dictionary of keys and values for a given UVCB substance.
@@ -52,7 +52,7 @@ current_dict = {
         “ID” : "149363"
         “CAS_No” : "66455-17-2"
         “Chemical_Name” : "Alcohols, C9-11"
-        *and so on…*
+        _and so on…_
         }
 
 ```
@@ -205,11 +205,12 @@ for i in range(len(chem_dict)):
 
 Summary statistics can be computed in order to better understand the data available to use in these three UVCB files. Here are some notable observations:
 
-|       | EU_REACH |  mixtures | random |
-| ----------- | ----------- |
-| Number of substances that have a MInChI (out of 150 total substances)   | 26 (17.3% of all substances)  |  36 (24% of all substances) | 6 (4% of all substances) |
-| Number of substances with InChI, SMILES, and concentration ratio   | 6  | 25 | 0 |
-| Number of substances with only InChI and SMILES | 20 | 9 | 6 |
+|                                                                       | EU_REACH                     | mixtures                   | random                   |
+|-----------------------------------------------------------------------|------------------------------|----------------------------|--------------------------|
+| Number of substances that have a MInChI (out of 150 total substances) | 26 (17.3% of all substances) | 36 (24% of all substances) | 6 (4% of all substances) |
+| Number of substances with InChI, SMILES, and concentration ratio      | 6                            | 25                         | 0                        |
+| Number of substances with only InChI and SMILES                       | 20                           | 9                          | 6                        |
+
 
 
 Out of the three files, the most MInChIs were generated from the “mixture” UVCB data. There were also significantly more substances in the “mixtures” data that indicated a concentration ratio. Nevertheless, it’s evident that most mixtures are lacking the minimum information needed (the InChI) to encode the MInChI string. Also, SOMETHING ABOUT NOT BEING SEPARATED BY COMPONENTS
