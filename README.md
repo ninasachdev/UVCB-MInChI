@@ -149,7 +149,7 @@ for mixfile in mixfiles:
  
     minchi = header + '/' + identifier + '/' + indexing + '/' + concentration
     minchis[mixfile['name']] = minchi
-``
+```
 
 Each MInChI string is separated into four parts: the header, structure identifier, indexing, and concentration. All of the strings are stored in a dictionary called `minchis`, with each key corresponding to the name of the substance.
 
