@@ -10,12 +10,26 @@ import json, rdkit, os, shutil
 from rdkit import Chem
 
 
+'''
+@param fileName: name of the file containing UVCB data
+@return filepath: the path of the file (including .txt)
+@return filename: the name of the file (not including .txt)
+'''
 def getFile(fileName):
     filepath = fileName
     filename= fileName.split('.')[0]
     return filepath, filename
 
-
+'''
+Creates a list of dictionaries to hold all UVCB data
+Each dictionary corresponds to one row (substance) in the file
+Each key in the dictionary corresponds to a column in the file
+Each value in the dictionary corresponds to the entry associated with that column in the file
+Saves chem_dict as a JSON file
+@param fileName: name of the file containing UVCB data (not including .txt)
+@return chem_dict: list of dictionaries containing all UVCB data
+@return chem_keys: list of column names in the file
+'''
 def createChemDict(fileName):
     filepath, filename = getFile(fileName)
 
@@ -47,7 +61,11 @@ def createChemDict(fileName):
 
     return chem_dict, chem_keys
 
-
+'''
+Filters out all substances that do not have an InChI 
+@param chem_dict: list of dictionaries containing all UVCB data
+@return filter_InChI: list of dictionaries containing all substances that have an InChI
+'''
 def filterInChI(chem_dict):
     filter_InChI = []
     for i in range(len(chem_dict)):
@@ -56,6 +74,14 @@ def filterInChI(chem_dict):
 
     return filter_InChI
 
+'''
+Extracts features needed to create the Mixfile and MInChI string
+@param filter_InChI: list of dictionaries containing all substances that have an InChI
+@return names: list of chemical names
+@return InChI_list: list of InChI values
+@return InChI_key_list: list of InChI keys
+@return SMILES_list: list of SMILES values
+'''
 def getFeatures(filter_InChI):
     names = []
     InChI_list = []
@@ -69,6 +95,11 @@ def getFeatures(filter_InChI):
 
     return names, InChI_list, InChI_key_list, SMILES_list
 
+'''
+Uses Chem module from rdkit library to convert a list of SMILES to their corresponding molfiles
+@param SMILES_list: list of SMILES values
+@return molfile_list: list of molfiles associated with the SMILES list
+'''
 def getMolfile(SMILES_list):
     molfile_list = []
     for i in range(len(SMILES_list)):
@@ -78,6 +109,15 @@ def getMolfile(SMILES_list):
 
     return molfile_list
 
+
+'''
+Finds the concentration ratio for each substance, if it exists
+Matches the corresponding unit (vp) to the ratio 
+@param filter_InChI: list of dictionaries containing all substances that have an InChI
+@param names: chemical names of all substances in filter_InChI
+@return quantities: list of concentration ratios in filter_InChI, empty string if no ratio exists
+@return units: list of units associated with concentration ratios, empty string if no ratio exists
+'''
 def getConcentration(filter_InChI, names):
     quantities = ['' for i in range(len(names))]
     units = ['' for i in range(len(names))]
@@ -92,7 +132,20 @@ def getConcentration(filter_InChI, names):
         
     return quantities, units
 
-def createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities, units):
+
+'''
+Constructs a Mixfile for each UVCB substance that has an InChI 
+Saves the Mixfile in JSON format in a new /mixfiles/ directory
+@param filename: name of the file containing UVCB data (not including .txt)
+@param InChI_list: list of InChI values 
+@param InChI_key_list: list of InChI keys
+@param names: list of chemical names
+@param molfiles: list of molfiles
+@param SMILES: list of SMILES values
+@param quantities: list of concentration ratios
+@return mixfiles: list of dictionaries, where each dictionary corresponds to a substance's Mixfile
+'''
+def createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities):
     os.mkdir('mixfiles')
 
     mixfiles = []
@@ -115,6 +168,11 @@ def createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMI
 
     return mixfiles
 
+'''
+Builds the MInChI string from the substance's corresponding Mixfile
+@param mixfiles: list of dictionaries, where each dictionary corresponds to a substance's Mixfile
+@return minchis: a dictionary of MinChI strings, where each key is the chemical name and each value is the MInChI string
+'''
 def createMInChIString(mixfiles):
     minchis = {}
     for mixfile in mixfiles:
@@ -130,6 +188,16 @@ def createMInChIString(mixfiles):
     
     return minchis
 
+
+'''
+Adds the MInChI strings back into the original UVCB data
+Creates a new MInChI column
+Saves the updated data in a new .txt file 
+@param minchis: dictionary of MInChI strings
+@param chem_dict: list of dictionaries containing all UVCB data
+@param chem_keys: list of column names in the original file
+@param filename: name of file containing original UVCB data (not including .txt)
+'''
 def addMInChIFile(minchis, chem_dict, chem_keys, filename):
 
     outfile = open(filename + '_MInChI.txt', 'w')
@@ -149,7 +217,14 @@ def addMInChIFile(minchis, chem_dict, chem_keys, filename):
 
         outfile.write('\t'.join(elts) + '\n')
 
-
+'''
+Computes various summary statistics for a given UVCB dataset
+Finds how many substances had values for InChI, SMILES, concentration ratio, and a combination of the three
+Writes summary statistics to a new file
+@param chem_dict: list of dictionaries containing all UVCB data
+@param minchis: dictionary of MInChI strings
+@param filename: name of file containing all UVCB data (not including .txt)
+'''
 def summary_stats(chem_dict, minchis, filename):
     stats = {}
     for i in range(len(chem_dict)):
@@ -193,7 +268,14 @@ def summary_stats(chem_dict, minchis, filename):
         outfile.write(labels[i] + ': ' + str(stats_list[i]) + ' UVCB substances')
         outfile.write('\n')
     
-
+'''
+Executes all functions in this script
+For each substance in the UVCB dataset that contains an InChI, generates its Mixfile and MInChI string
+Adds Mixfile to /mixfiles/ directory
+Adds all MInChI strings to the dataset
+Computes summary statistics for the dataset
+@param currentFile: file path of the UVCB dataset (including .txt)
+'''
 def main(currentFile):
     filepath, filename = getFile(currentFile)
 
@@ -207,7 +289,7 @@ def main(currentFile):
 
     quantities, units = getConcentration(filter_InChI, names)
 
-    mixfiles = createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities, units)
+    mixfiles = createMixfileDict(filename, InChI_list, InChI_key_list, names, molfiles, SMILES, quantities)
 
     minchis = createMInChIString(mixfiles)
 
@@ -219,10 +301,13 @@ def main(currentFile):
 ########################################
 if __name__=='__main__':
 
+    #List of UVCB datasets
     mixtureFiles = ['EU_REACH.txt', 'mixtures.txt', 'random.txt']
 
+    #Current directory (should also contain UVCB datasets) 
     mainDir = os.getcwd()
     
+    #Run the main function on the list of UVCB datasets
     for mixtureFile in mixtureFiles:
         os.chdir(mainDir)
         main(mixtureFile)
