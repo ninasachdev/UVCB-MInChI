@@ -4,7 +4,7 @@ Unknown, Variable, Complex, and Biological (UVCB) substances are quite prevalent
 
 ## Research Questions
 
-Here are the motivating research questions of this project:
+Here are the research questions motivating this project:
 
 1. To what extent can UVCBs (mixtures) be encoded in machine-readable formats i.e., as MInChIs?
 2. What challenges exist in encoding MInChIs using currently available UVCB data? 
