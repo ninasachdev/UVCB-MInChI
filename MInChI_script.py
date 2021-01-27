@@ -33,14 +33,14 @@ def createChemDict(fileName):
 
     infile.close()
 
-    if os.path.isdir(filename):
-        shutil.rmtree(filename)
+    if os.path.isdir(filename + '_MInChI'):
+        shutil.rmtree(filename + '_MInChI')
         
-    if os.path.isdir(filename + '/mixtures'):
-        shutil.rmtree(filename + '/mixtures')
+    if os.path.isdir(filename + '_MInChI/mixtures'):
+        shutil.rmtree(filename + '_MInChI/mixtures')
 
-    os.mkdir(filename)
-    os.chdir(filename)
+    os.mkdir(filename + '_MInChI')
+    os.chdir(filename + '_MInChI')
 
     with open(filename + '_dict.json', 'w') as outfile:
         json.dump(chem_dict, outfile)
@@ -239,6 +239,8 @@ if __name__=='__main__':
     for mixtureFile in mixtureFiles:
         os.chdir(mainDir)
         main(mixtureFile)
+
+    
     
 
   
