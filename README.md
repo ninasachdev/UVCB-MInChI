@@ -128,7 +128,7 @@ for i in range(len(InChI_list)):
  
     with open('mixfiles/' + filename + '_mixture' + str(i) + '.mixfile', 'w') as outfile:
         json.dump(mixfile_dict, outfile)
-``
+```
 
 As shown from the code above, only one dictionary is created for the entire Mixfile, even though there are multiple components that make up each UVCB substance. A major challenge of creating Mixfiles from this data has to do with the fact that the components of a mixture cannot be identified. The InChI values, for example, don’t contain the “&” symbol, which denotes separate components.
 
