@@ -1,20 +1,22 @@
 ## Cheminformatics of Unknown, Variable, Complex, and Biological (UVCB) substances
 
-Unknown, Variable, Complex, and Biological (UVCB) substances are quite prevalent in our environment, but FINISH THIS SENTENCE ADD TWO MORE SENTENCES. Thus, this article describes how to standardize these unknown substances into a machine-readable format developed Clark et. al., called the Mixtures InChI (MInChI) string.  
+Unknown, Variable, Complex, and Biological (UVCB) substances are commonly found in our environment, but their complex chemical makeup can be challenging to understand. Since there is currently no way to standardize UVCB substances, this project seeks to encode UVCB substances into a machine-readable format developed by Clark et. al<sup>1</sup> , called the Mixtures InChI (MInChI) string. This article will provide a step-by-step tutorial on how to generate MInChI strings from UVCB data.  
+
+I would also like to acknowledge Adelene Lai and Dr. Zhanyun Wang for their mentorship and support throughout this project. 
 
 ## Research Questions
 
 Here are the research questions motivating this project:
 
 1. To what extent can UVCBs (mixtures) be encoded in machine-readable formats i.e., as MInChIs?
-2. What challenges exist in encoding MInChIs using currently available UVCB data? 
+2. What challenges exist in encoding MInChIs using currently available UVCB data<sup>2</sup>? 
 3. How can UVCB data providers improve the communication and dissemination of UVCB compounds?
 
 Throughout this article, these research questions will be addressed as we walk through the Python code written to generate the MInChI strings. 
 
 ## Installing and Running Mixtures Github
 
-It is useful to begin this project by understanding the work done by Clark et. al. In particular, running their [Github repository](https://github.com/cdd/mixtures) generates several Mixfiles that can be analyze and viewed using the Electron app. When installing Clark et. al.’s mixtures project, if you encounter an error when running the command electron app, try these commands instead:
+It is useful to begin this project by understanding the work done by Clark et. al. In particular, running their [Github repository](https://github.com/cdd/mixtures)<sup>3</sup> generates several Mixfiles that can be analyze and viewed using the Electron app. When installing Clark et. al.’s mixtures project, if you encounter an error when running the command electron app, try these commands instead:
 
 ```markdown
 cd app
@@ -23,7 +25,7 @@ cd app
 
 ## Parsing the Data
 
-The UVCB data was collected and compiled by Dr. Wang, separated into files according to their SOMETHING. The “EU_REACH” file came from FINISH THIS SENTENCE. The “mixtures” file SOMETHING, while the “random” file SOMETHING FINISH THIS SENTENCE.
+The UVCB data was collected by Dr. Wang and sorted into three different files. The “EU_REACH” file comes from the European Union's Registration, Evaluation, Authorisation and Restriction of Chemicals. The “mixtures” file contains single mixtures, while the “random” file contains mixtures that are more difficult to characterize.
 
 In each row of the file, there are 150 UVCB substances. The columns correspond to different chemical characteristics of the substance. Of the 53 columns called `chem_keys`, the columns needed to generate the Mixfile and MInChI are “Chemical_Name_Final”, “InChIKey_Final”, “InChI_Final”, and “SMILES_Final”. Although the remaining 49 column entries are not needed, they will still be extracted from the file.
 
@@ -207,7 +209,7 @@ for i in range(len(chem_dict)):
 
 ```
 
-## Summary Statistics and Conclusion
+## Summary Statistics
 
 Summary statistics can be computed in order to better understand the data available to use in these three UVCB files. Here are some notable observations:
 
@@ -218,43 +220,14 @@ Summary statistics can be computed in order to better understand the data availa
 | Number of substances with only InChI and SMILES                       | 20                           | 9                          | 6                        |
 
 
+Out of the three files, the most MInChIs were generated from the “mixtures” UVCB data. There were also significantly more substances in the “mixtures” data had a concentration ratio. Nevertheless, it’s evident that most mixtures in all three files are lacking the minimum information needed (the InChI) to encode the MInChI string. 
 
-Out of the three files, the most MInChIs were generated from the “mixture” UVCB data. There were also significantly more substances in the “mixtures” data that indicated a concentration ratio. Nevertheless, it’s evident that most mixtures are lacking the minimum information needed (the InChI) to encode the MInChI string. Also, SOMETHING ABOUT NOT BEING SEPARATED BY COMPONENTS
+## Conclusion
 
-## Welcome to GitHub Pages
+To summarize, this project was able to parse through UVCB data and extract the information needed to create Mixfiles and MInChI strings. In order to create the Mixfile for a substance, the data should have information like the chemical name, SMILES , InChI, InChI key, quantity, and units. The minimum information needed to create the MInChI string is the InChI and concentration (including units). Ideally, each substance would be separated into different components, such that each component has its own InChI and concentration.  
 
-You can use the [editor on GitHub](https://github.com/ninasachdev/UVCB-MInChI/edit/gh-pages/README.md) to maintain and preview the content for your website in Markdown files.
+## References
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ninasachdev/UVCB-MInChI/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+1. Clark, A. M.; McEwen, L. R.; Gedeck, P.; Bunin, B. A. Capturing Mixture Composition: An Open Machine-Readable Format for Representing Mixed Substances. _Journal of Cheminformatics_ **2019**, _11_ (1), 33. https://doi.org/10.1186/s13321-019-0357-4.
+2. Wang, Z.; Walker, G. W.; Muir, D. C. G.; Nagatani-Yoshida, K. Toward a Global Understanding of Chemical Pollution: A First Comprehensive Analysis of National and Regional Chemical Inventories. _Environ. Sci. Technol._ **2020**. https://doi.org/10.1021/acs.est.9b06379.
+3. _cdd/Mixtures_; Collaborative Drug Discovery, 2020. https://github.com/cdd/mixtures 
