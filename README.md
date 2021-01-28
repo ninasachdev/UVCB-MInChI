@@ -165,7 +165,7 @@ Here are a few examples of the MInChI strings that were generated from the EU_RE
 ### Example #2:
 
 ![Minchi Example #2](minchi2.png)
-- Structure identifier: C18H34O2.C4H11NO/c1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17-18(19)20;1-4(2,5)3-6/h9-10H,2-8,11-17H2,1H3,(H,19,20);6H,3,5H2,1-2H3/b10-9-; → it would be better if there were two separate InChI;s for 9-Octadecenoic acid (9Z) and 2-amino-2-methyl-1-propanol (1:1), respectively
+- Structure identifier: C18H34O2.C4H11NO/c1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17-18(19)20;1-4(2,5)3-6/h9-10H,2-8,11-17H2,1H3,(H,19,20);6H,3,5H2,1-2H3/b10-9-; → it would be better if there were two separate InChI's for 9-Octadecenoic acid (9Z) and 2-amino-2-methyl-1-propanol (1:1), respectively
 - Indexing: n1 → if there were two components, the indexing would be n{1&2} 
 - Concentration: 1:1vp → this is the concentration ratio of the entire mixture
 
