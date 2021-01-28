@@ -1,1 +1,0 @@
-InChI_SMILES_Ratio: 0 UVCB substancesInChI_SMILES: 6 UVCB substancesInChI_Ratio: 0 UVCB substancesSMILES_Ratio: 0 UVCB substancesInChI: 0 UVCB substancesSMILES: 8 UVCB substancesRatio: 7 UVCB substances
